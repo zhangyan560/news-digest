@@ -90,7 +90,7 @@ feeds:
 ## 定时运行
 
 - **cron**：见 [`scripts/cron.example`](scripts/cron.example)（每天北京时间八点）。
-- **GitHub Actions**：[`.github/workflows/digest.yml`](.github/workflows/digest.yml) **默认不运行**——需在仓库变量中设置 `ENABLE_DIGEST=true`，定时触发需取消 `schedule` 的注释；密钥通过 Secrets 注入，产物以 Artifact 形式上传，不会提交回仓库。
+- **GitHub Actions**：[`docs/github-actions/digest.yml`](docs/github-actions/digest.yml)（启用时复制到 `.github/workflows/`）**默认不运行**——需在仓库变量中设置 `ENABLE_DIGEST=true`，定时触发需取消 `schedule` 的注释；密钥通过 Secrets 注入，产物以 Artifact 形式上传，不会提交回仓库。
 
 ## 设计取舍
 
@@ -128,7 +128,7 @@ news-digest/
 ├── screenshots/
 ├── scripts/               # 截图脚本、cron 示例
 ├── tests/
-└── .github/workflows/digest.yml
+└── docs/github-actions/digest.yml
 ```
 
 ## License
