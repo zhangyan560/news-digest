@@ -1,0 +1,4 @@
+# 每天北京时间 08:00 生成一份日报（crontab -e 后粘贴；请替换路径）
+# 如需密钥，在 .env 中配置，脚本会自动加载
+CRON_TZ=Asia/Shanghai
+0 8 * * * cd /path/to/news-digest && mkdir -p output && { [ ! -f .env ] || { set -a; . ./.env; set +a; }; } && .venv/bin/python -m digest run --out output >> output/cron.log 2>&1

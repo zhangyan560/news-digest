@@ -1,0 +1,38 @@
+# 资讯汇总配置：主题（关键词用于打标签/检索）、免密钥数据源、搜索参数
+title: AI 与开源技术日报
+hours: 48                # 只保留最近 N 小时的内容
+max_items_per_topic: 6   # 每个主题最多输出条数
+fetch_full_text: true    # 是否抓取正文用于摘要（遵守 robots.txt）
+drop_unmatched: true     # 未命中任何主题的条目是否丢弃
+
+topics:
+  - name: 大模型与 AI 应用
+    queries: [LLM, AI agent, RAG]
+    keywords: [llm, gpt, claude, gemini, llama, qwen, deepseek, mistral, kimi, glm, 模型, 文心, 通义, 大模型, 语言模型, agent, agents, 智能体, rag, 检索增强, prompt, chatbot, openai, anthropic, 推理模型, 多模态, multimodal, embedding, fine-tun*, 微调]
+  - name: 开源项目与版本发布
+    queries: [open source release]
+    sources: [GitHub Releases]   # 来自这些来源的条目额外加分
+    keywords: [release, released, releases, 发布, 开源, open source, open-source, github, 版本, 更新, launch]
+  - name: AI 研究论文
+    queries: [arxiv paper]
+    sources: [arXiv]
+    keywords: [arxiv, paper, 论文, benchmark, dataset, 数据集, transformer, diffusion, reinforcement, 强化学习, 预训练]
+  - name: 开发者工具与基础设施
+    queries: [developer tools, kubernetes, database]
+    keywords: [python, rust, golang, typescript, javascript, kubernetes, k8s, docker, database, 数据库, postgres, sqlite, compiler, 编译器, linux, cloud, 云, gpu, cuda, 框架, framework, ide, vscode, 编程, programming]
+
+# 免密钥数据源（RSS/Atom）。fetch: false 表示直接使用 feed 内的摘要，不抓取正文
+feeds:
+  - {name: Hacker News 首页, url: "https://hnrss.org/frontpage", lang: en, weight: 1.0, fetch: true}
+  - {name: arXiv cs.AI, url: "https://rss.arxiv.org/rss/cs.AI", lang: en, weight: 0.8, fetch: false, max_items: 25}
+  - {name: Hugging Face 博客, url: "https://huggingface.co/blog/feed.xml", lang: en, weight: 1.0, fetch: true, max_items: 10}
+  - {name: 开源中国, url: "https://www.oschina.net/news/rss", lang: zh, weight: 1.0, fetch: false}
+  - {name: InfoQ 中文, url: "https://www.infoq.cn/feed", lang: zh, weight: 1.0, fetch: true, max_items: 15}
+  - {name: "GitHub Releases: ollama", url: "https://github.com/ollama/ollama/releases.atom", lang: en, weight: 0.9, fetch: false, max_items: 2}
+  - {name: "GitHub Releases: dify", url: "https://github.com/langgenius/dify/releases.atom", lang: en, weight: 0.9, fetch: false, max_items: 2}
+  - {name: "GitHub Releases: vllm", url: "https://github.com/vllm-project/vllm/releases.atom", lang: en, weight: 0.9, fetch: false, max_items: 2}
+  - {name: "GitHub Releases: transformers", url: "https://github.com/huggingface/transformers/releases.atom", lang: en, weight: 0.9, fetch: false, max_items: 2}
+
+search:
+  max_results_per_topic: 8
+  hn_min_points: 30        # 免密钥搜索（HN Algolia）的最低热度

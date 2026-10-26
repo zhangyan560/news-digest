@@ -1,0 +1,21 @@
+# 虚拟环境
+.venv/
+venv/
+env/
+# 密钥
+.env
+.env.*
+!.env.example
+*.key
+secrets.toml
+.streamlit/secrets.toml
+# 缓存与产物
+.cache/
+__pycache__/
+*.pyc
+.pytest_cache/
+output/
+# 系统
+.DS_Store
+.idea/
+.vscode/

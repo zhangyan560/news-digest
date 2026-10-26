@@ -1,0 +1,41 @@
+# 定时生成日报并作为 Artifact 上传。
+# 默认不会运行：需在仓库 Settings → Variables 中设置 ENABLE_DIGEST=true，
+# 并可选在 Secrets 中配置 TAVILY_API_KEY / BRAVE_API_KEY / FIRECRAWL_API_KEY / LLM_*（不配置则走免密钥模式）。
+name: daily-digest
+
+on:
+  workflow_dispatch:
+  # 取消注释以启用定时任务（UTC 00:00 = 北京时间 08:00）
+  # schedule:
+  #   - cron: "0 0 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  digest:
+    if: ${{ vars.ENABLE_DIGEST == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m pytest -q
+      - name: 生成日报
+        env:
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
+        run: python -m digest run --out output
+      - uses: actions/upload-artifact@v4
+        with:
+          name: digest
+          path: output/
+          retention-days: 14
